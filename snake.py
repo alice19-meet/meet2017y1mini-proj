@@ -41,7 +41,7 @@ UP_ARROW='Up'
 LEFT_ARROW='Left'
 DOWN_ARROW='Down'
 RIGHT_ARROW='Right'
-TIME_STEP=150
+TIME_STEP=100
 SPACEBAR='space'
 UP=0
 DOWN=1
@@ -55,25 +55,38 @@ DOWN_EDGE=-250
 RIGHT_EDGE=400
 LEFT_EDGE=-400
 
+
 def up():
     global direction
-    direction=UP
-    print("You pressed the up key")
+    if direction != DOWN:
+        direction=UP
+        print("You pressed the up key")
+    
+
     
 def down():
     global direction
-    direction=DOWN
-    print("You pressed the down key")
+    if direction != UP:
+        direction=DOWN
+        print("You pressed the down key")
+
 
 def left():
     global direction
-    direction=LEFT
-    print("You pressed the left key")
+    if direction!=RIGHT:
+        direction=LEFT
+        print("You pressed the left key")
+
+    
 
 def right():
     global direction
-    direction=RIGHT
-    print("You pressed the right key")
+    if direction!=LEFT:
+        direction=RIGHT
+        print("You pressed the right key")
+        
+
+    
 
 
 def make_food():    
@@ -89,7 +102,9 @@ def make_food():
     food_location = (food_x,food_y)
     food_pos.append(food_location)
     food_location1=food.stamp()
-    food_stamps.append(food_location1) 
+    food_stamps.append(food_location1)
+
+    
 
 make_food()
 
@@ -118,10 +133,6 @@ def move_snake():
     new_stamp=snake.stamp()
     stamp_list.append(new_stamp)
     
-    old_stamp=stamp_list.pop(0)
-    snake.clearstamp(old_stamp)
-    pos_list.pop(0)
-    
     # special place
     global food_stamps, food_pos
     
@@ -132,6 +143,12 @@ def move_snake():
         food_stamps.pop(food_ind)
         print("You have eaten the food!")
         make_food()
+        
+    else:
+        old_stamp=stamp_list.pop(0)
+        snake.clearstamp(old_stamp)
+        pos_list.pop(0)
+
 
     new_pos=snake.pos()
     new_x_pos=new_pos[0]
@@ -154,9 +171,7 @@ def move_snake():
     if pos_list[-1] in pos_list[0:-1]:
         print('You ate yourself! Game over!')
         quit()
-
-    
-
+        
     turtle.ontimer(move_snake,TIME_STEP)
 
 move_snake()
